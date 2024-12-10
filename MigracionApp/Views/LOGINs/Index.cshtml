@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MigracionApp.Controllers.LOGIN>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.clave)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ultimo_acceso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USUARIOS.nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.clave)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ultimo_acceso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USUARIOS.nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.id }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

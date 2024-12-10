@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MigracionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DOCUMENTOS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="tipo_documento" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="numero_documento" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="fecha_expiracion" Type="date" />
+          <Property Name="id_estado" Type="int" Nullable="false" />
+          <Property Name="id_viajero" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ESTADOS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GENEROS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOGIN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="usuario_id" Type="int" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="clave" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ultimo_acceso" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PASAJEROS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="segundo_nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="apellido1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellido2" Type="nvarchar" MaxLength="50" />
+          <Property Name="fecha_nacimiento" Type="date" Nullable="false" />
+          <Property Name="nacionalidad" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="correo_electronico" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="genero_fk" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USUARIOS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellido1" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellido2" Type="nvarchar" MaxLength="50" />
+          <Property Name="clave" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="rol" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VIAJES_TRANSITO_MIGRACION">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id_viajero" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" Nullable="false" />
+          <Property Name="destino" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="origen" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="tipo_solicitud" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="motivo_viaje" Type="nvarchar(max)" />
+          <Property Name="id_usuario" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__DOCUMENTO__id_es__4316F928">
+          <End Role="ESTADOS" Type="Self.ESTADOS" Multiplicity="1" />
+          <End Role="DOCUMENTOS" Type="Self.DOCUMENTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DOCUMENTOS">
+              <PropertyRef Name="id_estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DOCUMENTO__id_vi__440B1D61">
+          <End Role="PASAJEROS" Type="Self.PASAJEROS" Multiplicity="1" />
+          <End Role="DOCUMENTOS" Type="Self.DOCUMENTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PASAJEROS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DOCUMENTOS">
+              <PropertyRef Name="id_viajero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LOGIN__usuario_i__4F7CD00D">
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="1" />
+          <End Role="LOGIN" Type="Self.LOGIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LOGIN">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PASAJEROS__gener__3F466844">
+          <End Role="GENEROS" Type="Self.GENEROS" Multiplicity="1" />
+          <End Role="PASAJEROS" Type="Self.PASAJEROS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GENEROS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PASAJEROS">
+              <PropertyRef Name="genero_fk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VIAJES_TR__id_us__4BAC3F29">
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="1" />
+          <End Role="VIAJES_TRANSITO_MIGRACION" Type="Self.VIAJES_TRANSITO_MIGRACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="VIAJES_TRANSITO_MIGRACION">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VIAJES_TR__id_vi__4AB81AF0">
+          <End Role="PASAJEROS" Type="Self.PASAJEROS" Multiplicity="1" />
+          <End Role="VIAJES_TRANSITO_MIGRACION" Type="Self.VIAJES_TRANSITO_MIGRACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PASAJEROS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="VIAJES_TRANSITO_MIGRACION">
+              <PropertyRef Name="id_viajero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MigracionModelStoreContainer">
+          <EntitySet Name="DOCUMENTOS" EntityType="Self.DOCUMENTOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ESTADOS" EntityType="Self.ESTADOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GENEROS" EntityType="Self.GENEROS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOGIN" EntityType="Self.LOGIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PASAJEROS" EntityType="Self.PASAJEROS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VIAJES_TRANSITO_MIGRACION" EntityType="Self.VIAJES_TRANSITO_MIGRACION" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__DOCUMENTO__id_es__4316F928" Association="Self.FK__DOCUMENTO__id_es__4316F928">
+            <End Role="ESTADOS" EntitySet="ESTADOS" />
+            <End Role="DOCUMENTOS" EntitySet="DOCUMENTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DOCUMENTO__id_vi__440B1D61" Association="Self.FK__DOCUMENTO__id_vi__440B1D61">
+            <End Role="PASAJEROS" EntitySet="PASAJEROS" />
+            <End Role="DOCUMENTOS" EntitySet="DOCUMENTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LOGIN__usuario_i__4F7CD00D" Association="Self.FK__LOGIN__usuario_i__4F7CD00D">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="LOGIN" EntitySet="LOGIN" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PASAJEROS__gener__3F466844" Association="Self.FK__PASAJEROS__gener__3F466844">
+            <End Role="GENEROS" EntitySet="GENEROS" />
+            <End Role="PASAJEROS" EntitySet="PASAJEROS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VIAJES_TR__id_us__4BAC3F29" Association="Self.FK__VIAJES_TR__id_us__4BAC3F29">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="VIAJES_TRANSITO_MIGRACION" EntitySet="VIAJES_TRANSITO_MIGRACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VIAJES_TR__id_vi__4AB81AF0" Association="Self.FK__VIAJES_TR__id_vi__4AB81AF0">
+            <End Role="PASAJEROS" EntitySet="PASAJEROS" />
+            <End Role="VIAJES_TRANSITO_MIGRACION" EntitySet="VIAJES_TRANSITO_MIGRACION" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MigracionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DOCUMENTOS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="tipo_documento" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="numero_documento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fecha_expiracion" Type="DateTime" Precision="0" />
+          <Property Name="id_estado" Type="Int32" Nullable="false" />
+          <Property Name="id_viajero" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ESTADOS" Relationship="Self.FK__DOCUMENTO__id_es__4316F928" FromRole="DOCUMENTOS" ToRole="ESTADOS" />
+          <NavigationProperty Name="PASAJEROS" Relationship="Self.FK__DOCUMENTO__id_vi__440B1D61" FromRole="DOCUMENTOS" ToRole="PASAJEROS" />
+        </EntityType>
+        <EntityType Name="ESTADOS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DOCUMENTOS" Relationship="Self.FK__DOCUMENTO__id_es__4316F928" FromRole="ESTADOS" ToRole="DOCUMENTOS" />
+        </EntityType>
+        <EntityType Name="GENEROS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PASAJEROS" Relationship="Self.FK__PASAJEROS__gener__3F466844" FromRole="GENEROS" ToRole="PASAJEROS" />
+        </EntityType>
+        <EntityType Name="LOGIN">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="usuario_id" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="clave" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ultimo_acceso" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="USUARIOS" Relationship="Self.FK__LOGIN__usuario_i__4F7CD00D" FromRole="LOGIN" ToRole="USUARIOS" />
+        </EntityType>
+        <EntityType Name="PASAJEROS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="segundo_nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="apellido1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="apellido2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fecha_nacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="nacionalidad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="correo_electronico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="genero_fk" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DOCUMENTOS" Relationship="Self.FK__DOCUMENTO__id_vi__440B1D61" FromRole="PASAJEROS" ToRole="DOCUMENTOS" />
+          <NavigationProperty Name="GENEROS" Relationship="Self.FK__PASAJEROS__gener__3F466844" FromRole="PASAJEROS" ToRole="GENEROS" />
+          <NavigationProperty Name="VIAJES_TRANSITO_MIGRACION" Relationship="Self.FK__VIAJES_TR__id_vi__4AB81AF0" FromRole="PASAJEROS" ToRole="VIAJES_TRANSITO_MIGRACION" />
+        </EntityType>
+        <EntityType Name="USUARIOS">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="apellido1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="apellido2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="clave" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="LOGIN" Relationship="Self.FK__LOGIN__usuario_i__4F7CD00D" FromRole="USUARIOS" ToRole="LOGIN" />
+          <NavigationProperty Name="VIAJES_TRANSITO_MIGRACION" Relationship="Self.FK__VIAJES_TR__id_us__4BAC3F29" FromRole="USUARIOS" ToRole="VIAJES_TRANSITO_MIGRACION" />
+        </EntityType>
+        <EntityType Name="VIAJES_TRANSITO_MIGRACION">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="id_viajero" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="destino" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="origen" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tipo_solicitud" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="motivo_viaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="id_usuario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PASAJEROS" Relationship="Self.FK__VIAJES_TR__id_vi__4AB81AF0" FromRole="VIAJES_TRANSITO_MIGRACION" ToRole="PASAJEROS" />
+          <NavigationProperty Name="USUARIOS" Relationship="Self.FK__VIAJES_TR__id_us__4BAC3F29" FromRole="VIAJES_TRANSITO_MIGRACION" ToRole="USUARIOS" />
+        </EntityType>
+        <Association Name="FK__DOCUMENTO__id_es__4316F928">
+          <End Role="ESTADOS" Type="Self.ESTADOS" Multiplicity="1" />
+          <End Role="DOCUMENTOS" Type="Self.DOCUMENTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ESTADOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DOCUMENTOS">
+              <PropertyRef Name="id_estado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DOCUMENTO__id_vi__440B1D61">
+          <End Role="PASAJEROS" Type="Self.PASAJEROS" Multiplicity="1" />
+          <End Role="DOCUMENTOS" Type="Self.DOCUMENTOS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PASAJEROS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DOCUMENTOS">
+              <PropertyRef Name="id_viajero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PASAJEROS__gener__3F466844">
+          <End Role="GENEROS" Type="Self.GENEROS" Multiplicity="1" />
+          <End Role="PASAJEROS" Type="Self.PASAJEROS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GENEROS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PASAJEROS">
+              <PropertyRef Name="genero_fk" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LOGIN__usuario_i__4F7CD00D">
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="1" />
+          <End Role="LOGIN" Type="Self.LOGIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LOGIN">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VIAJES_TR__id_vi__4AB81AF0">
+          <End Role="PASAJEROS" Type="Self.PASAJEROS" Multiplicity="1" />
+          <End Role="VIAJES_TRANSITO_MIGRACION" Type="Self.VIAJES_TRANSITO_MIGRACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PASAJEROS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="VIAJES_TRANSITO_MIGRACION">
+              <PropertyRef Name="id_viajero" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VIAJES_TR__id_us__4BAC3F29">
+          <End Role="USUARIOS" Type="Self.USUARIOS" Multiplicity="1" />
+          <End Role="VIAJES_TRANSITO_MIGRACION" Type="Self.VIAJES_TRANSITO_MIGRACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIOS">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="VIAJES_TRANSITO_MIGRACION">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MigracionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DOCUMENTOS" EntityType="Self.DOCUMENTOS" />
+          <EntitySet Name="ESTADOS" EntityType="Self.ESTADOS" />
+          <EntitySet Name="GENEROS" EntityType="Self.GENEROS" />
+          <EntitySet Name="LOGIN" EntityType="Self.LOGIN" />
+          <EntitySet Name="PASAJEROS" EntityType="Self.PASAJEROS" />
+          <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" />
+          <EntitySet Name="VIAJES_TRANSITO_MIGRACION" EntityType="Self.VIAJES_TRANSITO_MIGRACION" />
+          <AssociationSet Name="FK__DOCUMENTO__id_es__4316F928" Association="Self.FK__DOCUMENTO__id_es__4316F928">
+            <End Role="ESTADOS" EntitySet="ESTADOS" />
+            <End Role="DOCUMENTOS" EntitySet="DOCUMENTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DOCUMENTO__id_vi__440B1D61" Association="Self.FK__DOCUMENTO__id_vi__440B1D61">
+            <End Role="PASAJEROS" EntitySet="PASAJEROS" />
+            <End Role="DOCUMENTOS" EntitySet="DOCUMENTOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PASAJEROS__gener__3F466844" Association="Self.FK__PASAJEROS__gener__3F466844">
+            <End Role="GENEROS" EntitySet="GENEROS" />
+            <End Role="PASAJEROS" EntitySet="PASAJEROS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LOGIN__usuario_i__4F7CD00D" Association="Self.FK__LOGIN__usuario_i__4F7CD00D">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="LOGIN" EntitySet="LOGIN" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VIAJES_TR__id_vi__4AB81AF0" Association="Self.FK__VIAJES_TR__id_vi__4AB81AF0">
+            <End Role="PASAJEROS" EntitySet="PASAJEROS" />
+            <End Role="VIAJES_TRANSITO_MIGRACION" EntitySet="VIAJES_TRANSITO_MIGRACION" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VIAJES_TR__id_us__4BAC3F29" Association="Self.FK__VIAJES_TR__id_us__4BAC3F29">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="VIAJES_TRANSITO_MIGRACION" EntitySet="VIAJES_TRANSITO_MIGRACION" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MigracionModelStoreContainer" CdmEntityContainer="MigracionEntities">
+          <EntitySetMapping Name="DOCUMENTOS">
+            <EntityTypeMapping TypeName="MigracionModel.DOCUMENTOS">
+              <MappingFragment StoreEntitySet="DOCUMENTOS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tipo_documento" ColumnName="tipo_documento" />
+                <ScalarProperty Name="numero_documento" ColumnName="numero_documento" />
+                <ScalarProperty Name="fecha_expiracion" ColumnName="fecha_expiracion" />
+                <ScalarProperty Name="id_estado" ColumnName="id_estado" />
+                <ScalarProperty Name="id_viajero" ColumnName="id_viajero" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ESTADOS">
+            <EntityTypeMapping TypeName="MigracionModel.ESTADOS">
+              <MappingFragment StoreEntitySet="ESTADOS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GENEROS">
+            <EntityTypeMapping TypeName="MigracionModel.GENEROS">
+              <MappingFragment StoreEntitySet="GENEROS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOGIN">
+            <EntityTypeMapping TypeName="MigracionModel.LOGIN">
+              <MappingFragment StoreEntitySet="LOGIN">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="clave" ColumnName="clave" />
+                <ScalarProperty Name="ultimo_acceso" ColumnName="ultimo_acceso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PASAJEROS">
+            <EntityTypeMapping TypeName="MigracionModel.PASAJEROS">
+              <MappingFragment StoreEntitySet="PASAJEROS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="segundo_nombre" ColumnName="segundo_nombre" />
+                <ScalarProperty Name="apellido1" ColumnName="apellido1" />
+                <ScalarProperty Name="apellido2" ColumnName="apellido2" />
+                <ScalarProperty Name="fecha_nacimiento" ColumnName="fecha_nacimiento" />
+                <ScalarProperty Name="nacionalidad" ColumnName="nacionalidad" />
+                <ScalarProperty Name="correo_electronico" ColumnName="correo_electronico" />
+                <ScalarProperty Name="genero_fk" ColumnName="genero_fk" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIOS">
+            <EntityTypeMapping TypeName="MigracionModel.USUARIOS">
+              <MappingFragment StoreEntitySet="USUARIOS">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido1" ColumnName="apellido1" />
+                <ScalarProperty Name="apellido2" ColumnName="apellido2" />
+                <ScalarProperty Name="clave" ColumnName="clave" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VIAJES_TRANSITO_MIGRACION">
+            <EntityTypeMapping TypeName="MigracionModel.VIAJES_TRANSITO_MIGRACION">
+              <MappingFragment StoreEntitySet="VIAJES_TRANSITO_MIGRACION">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="id_viajero" ColumnName="id_viajero" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="destino" ColumnName="destino" />
+                <ScalarProperty Name="origen" ColumnName="origen" />
+                <ScalarProperty Name="tipo_solicitud" ColumnName="tipo_solicitud" />
+                <ScalarProperty Name="motivo_viaje" ColumnName="motivo_viaje" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

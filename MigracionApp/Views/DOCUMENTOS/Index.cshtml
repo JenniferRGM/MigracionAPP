@@ -1,0 +1,58 @@
+﻿@model IEnumerable<MigracionApp.Controllers.DOCUMENTOS>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear Documento", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.tipo_documento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.numero_documento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_expiracion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ESTADOS.descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PASAJEROS.nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.tipo_documento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.numero_documento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_expiracion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ESTADOS.descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PASAJEROS.nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Detalles", "Details", new { id=item.id }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MigracionApp.Controllers.PASAJEROS>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear Pasajero", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.segundo_nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.apellido1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.apellido2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_nacimiento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nacionalidad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.correo_electronico)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GENEROS.descripcion)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.segundo_nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.apellido1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.apellido2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fecha_nacimiento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nacionalidad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.correo_electronico)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GENEROS.descripcion)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Detalels", "Details", new { id=item.id }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
